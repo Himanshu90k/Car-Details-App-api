@@ -13,7 +13,7 @@ app.use(cors({
     origin: allowedUrl,
     optionsSuccessStatus: 200
 }))
-app.use(express.json({limit: '5kb'}))
+app.use(express.json({limit: '10kb'}))
 
 //Routes
 app.use('/api', routes)

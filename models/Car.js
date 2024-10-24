@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 const carDetailsSchema = mongoose.Schema({
-    name: {type: String},
+    carName: {type: String},
     carNo: {type: String, required: true, unique: true},
     mechanicName: {type: String},
     serviceAdvisor: {type: String},
