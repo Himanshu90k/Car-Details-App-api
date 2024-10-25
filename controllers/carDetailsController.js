@@ -11,7 +11,7 @@ export const addCarDetails = async (req, res, next) => {
 
     } catch(error) {
         console.log(error)
-        next()
+        next(error)
     }
 }
 
@@ -20,7 +20,7 @@ export const updateCarDetails = async (req, res, next) => {
         //search for the car object
         const car = await Car.findById(req.params.id)
         if (!car) {
-            res.status(404).json({message: "car details not found"})
+            return res.status(404).json({message: "car details not found"})
         }
 
         // update the car data on the database
@@ -37,6 +37,39 @@ export const updateCarDetails = async (req, res, next) => {
         
     } catch(error) {
         console.log(error)
-        next()
+        next(error)
+    }
+}
+
+export const deleteCarDetails = async (req, res, next) => {
+    try {
+        //delete the car document from the MonogDB
+        const car = await Car.findByIdAndDelete(req.params.id)
+        if (!car) {
+            return res.status(404).json({message: "car details not found"})
+        }
+
+        console.log(`The car details with id: ${req.params.id} was deleted`)
+        res.status(200).json({message: "Car details deleted"})
+
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+export const getCarDetails = async (req, res, next) => {
+    try {
+        const car = await Car.findById(req.params.id)
+        if(!car) {
+            return res.status(404).json({message: "Car details not found"})
+        }
+
+        console.log(`car details requested with id: ${req.params.id} and ip${req.ip}`)
+        res.status(200).json(car)
+
+    } catch (error) {
+        console.log(error)
+        next(error)
     }
 }
