@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 
 const carDetailsSchema = mongoose.Schema({
     carName: {type: String},
+    date: {type: Date, required: true},
     carNo: {type: String, required: true, unique: true},
     mechanicName: {type: String},
     serviceAdvisor: {type: String},
