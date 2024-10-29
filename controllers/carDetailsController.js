@@ -50,7 +50,7 @@ export const deleteCarDetails = async (req, res, next) => {
         }
 
         console.log(`The car details with id: ${req.params.id} was deleted`)
-        res.status(200).json({message: "Car details deleted"})
+        res.status(200).json(car)
 
     } catch (error) {
         console.log(error)
@@ -58,7 +58,7 @@ export const deleteCarDetails = async (req, res, next) => {
     }
 }
 
-export const getCarDetails = async (req, res, next) => {
+export const getCar = async (req, res, next) => {
     try {
         const car = await Car.findById(req.params.id)
         if(!car) {
@@ -68,6 +68,28 @@ export const getCarDetails = async (req, res, next) => {
         console.log(`car details requested with id: ${req.params.id} and ip${req.ip}`)
         res.status(200).json(car)
 
+    } catch (error) {
+        console.log(error)
+        next(error)
+    }
+}
+
+export const getCars = async (req, res, next) => {
+    try {
+        // Offset for Indian Standard Time
+        const currentDate = new Date
+        IstOffset = 5.5 * 60 * 60 * 1000;
+        const startOfDay = new Date(currentDate.getTime + IstOffset)
+        const endOfDay = new Date(currentDate.getTime + IstOffset)
+
+        const cars = await Car.find({date: {$gte: startOfDay, $lt: endOfDay}}).exec()
+
+        if (!cars) {
+            return res.status(404).json({message: "No Data found"})
+        }
+        console.log(`The cars list was fetched fo the date: ${currentDate}`)
+        res.status(200).json(cars)
+        
     } catch (error) {
         console.log(error)
         next(error)
