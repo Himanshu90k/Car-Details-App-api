@@ -2,10 +2,10 @@ import Car from "../models/Car.js";
 
 export const addCarDetails = async (req, res, next) => {
     try {
-        const {carName, carNo, mechanicName, serviceAdvisor, RO_PRW, work} = req.body
+        const {carName, date, carNo, mechanicName, serviceAdvisor, RO_PRW, work} = req.body
 
         //create new car object from req body and save to the database
-        const car = new Car ({carName, carNo, mechanicName, serviceAdvisor, RO_PRW, work})
+        const car = new Car ({carName, date, carNo, mechanicName, serviceAdvisor, RO_PRW, work})
         await car.save()
         res.status(201).json(car)
 
@@ -78,18 +78,17 @@ export const getCars = async (req, res, next) => {
     try {
         // Offset for Indian Standard Time
         const currentDate = new Date
-        IstOffset = 5.5 * 60 * 60 * 1000;
-        const startOfDay = new Date(currentDate.getTime + IstOffset)
-        const endOfDay = new Date(currentDate.getTime + IstOffset)
+        const startOfDay = currentDate.setTime(0, 0, 0, 0)
+        const endOfDay = currentDate.setTime(23, 59, 59, 0)
 
         const cars = await Car.find({date: {$gte: startOfDay, $lt: endOfDay}}).exec()
 
         if (!cars) {
             return res.status(404).json({message: "No Data found"})
         }
-        console.log(`The cars list was fetched fo the date: ${currentDate}`)
+        console.log(`The cars list was fetched for the date: ${currentDate}`)
         res.status(200).json(cars)
-        
+
     } catch (error) {
         console.log(error)
         next(error)
