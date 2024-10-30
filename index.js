@@ -5,7 +5,7 @@ import routes from './routes/index.js'
 
 const app = express();
 const port = process.env.PORT;
-const allowedUrl = process.env.FRONTEND_URL
+const allowedUrl = process.env.FRONTEND_URL.split(",")
 const mongoDBConnectionString = process.env.DBURL
 
 //middleware

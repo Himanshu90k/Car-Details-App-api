@@ -24,10 +24,10 @@ export const updateCarDetails = async (req, res, next) => {
         }
 
         // update the car data on the database
-        const {mechanicName, serviceAdvisor, RO_PRW, work} = req.body
+        const {date, mechanicName, serviceAdvisor, RO_PRW, work} = req.body
         const updateCar = await Car.findByIdAndUpdate(
             req.params.id,
-            {$set: {mechanicName, serviceAdvisor, RO_PRW, work}, $inc: {__v: 1}}, 
+            {$set: {date, mechanicName, serviceAdvisor, RO_PRW, work}, $inc: {__v: 1}}, 
             {new: true}
         )
 
@@ -77,15 +77,16 @@ export const getCar = async (req, res, next) => {
 export const getCars = async (req, res, next) => {
     try {
         // Offset for Indian Standard Time
-        const currentDate = new Date
-        const startOfDay = currentDate.setTime(0, 0, 0, 0)
-        const endOfDay = currentDate.setTime(23, 59, 59, 0)
+        const currentDate = new Date()
+        const startOfDay = currentDate.setUTCHours(0, 0, 0, 0)
+        const endOfDay = currentDate.setUTCHours(23, 59, 59, 999)
+        console.log(startOfDay, endOfDay);
 
         const cars = await Car.find({date: {$gte: startOfDay, $lt: endOfDay}}).exec()
 
-        if (!cars) {
-            return res.status(404).json({message: "No Data found"})
-        }
+        // if (!cars || cars.length === 0) {
+        //     return res.status(404).json({message: "No Data found"})
+        // }
         console.log(`The cars list was fetched for the date: ${currentDate}`)
         res.status(200).json(cars)
 
