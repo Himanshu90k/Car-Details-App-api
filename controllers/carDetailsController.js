@@ -5,7 +5,7 @@ export const addCarDetails = async (req, res, next) => {
         const {carName, date, carNo, mechanicName, serviceAdvisor, RO_PRW, work} = req.body
 
         //create new car object from req body and save to the database
-        const car = new Car ({carName, date, carNo, mechanicName, serviceAdvisor, RO_PRW, work})
+        const car = new Car ({carName, date: new Date(date), carNo, mechanicName, serviceAdvisor, RO_PRW, work})
         await car.save()
         res.status(201).json(car)
 
