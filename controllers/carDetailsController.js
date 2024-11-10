@@ -24,10 +24,10 @@ export const updateCarDetails = async (req, res, next) => {
         }
 
         // update the car data on the database
-        const {date, mechanicName, serviceAdvisor, RO_PRW, work} = req.body
+        const {carName, carNo, date, mechanicName, serviceAdvisor, RO_PRW, work} = req.body
         const updateCar = await Car.findByIdAndUpdate(
             req.params.id,
-            {$set: {date, mechanicName, serviceAdvisor, RO_PRW, work}, $inc: {__v: 1}}, 
+            {$set: {carName, carNo, date, mechanicName, serviceAdvisor, RO_PRW, work}, $inc: {__v: 1}}, 
             {new: true}
         )
 
