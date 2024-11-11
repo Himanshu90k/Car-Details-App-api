@@ -76,17 +76,15 @@ export const getCar = async (req, res, next) => {
 
 export const getCars = async (req, res, next) => {
     try {
-        // Offset for Indian Standard Time
-        const currentDate = new Date()
+        const currentDate = new Date(req.query.date)
         const startOfDay = currentDate.setUTCHours(0, 0, 0, 0)
         const endOfDay = currentDate.setUTCHours(23, 59, 59, 999)
-        console.log(startOfDay, endOfDay);
 
         const cars = await Car.find({date: {$gte: startOfDay, $lt: endOfDay}}).exec()
 
-        // if (!cars || cars.length === 0) {
-        //     return res.status(404).json({message: "No Data found"})
-        // }
+        if (!cars || cars.length === 0) {
+            return res.status(404).json({message: "No Data found"})
+        }
         console.log(`The cars list was fetched for the date: ${currentDate}`)
         res.status(200).json(cars)
 
