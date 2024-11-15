@@ -87,7 +87,6 @@ export const getCars = async (req, res, next) => {
         }
         console.log(`The cars list was fetched for the date: ${currentDate}`)
         res.status(200).json(cars)
-
     } catch (error) {
         console.log(error)
         next(error)
