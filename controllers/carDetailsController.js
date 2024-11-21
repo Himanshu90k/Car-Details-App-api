@@ -80,12 +80,12 @@ export const getCars = async (req, res, next) => {
         const startOfDay = currentDate.setUTCHours(0, 0, 0, 0)
         const endOfDay = currentDate.setUTCHours(23, 59, 59, 999)
 
-        const cars = await Car.find({date: {$gte: startOfDay, $lt: endOfDay}}).exec()
+        const cars = await Car.find({createdAt: {$gte: startOfDay, $lt: endOfDay}}).exec()
 
         if (!cars || cars.length === 0) {
             return res.status(404).json({message: "No Data found"})
         }
-        console.log(`The cars list was fetched for the date: ${currentDate}`)
+        console.log(`The cars list was fetched for the date: ${cars.map(car => car.createdAt)}`)
         res.status(200).json(cars)
     } catch (error) {
         console.log(error)
